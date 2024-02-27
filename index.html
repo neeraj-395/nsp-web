@@ -7,55 +7,59 @@
     <title>Notes Archive</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/carousel.css">
+    <link rel="icon" href="img/logo.ico" type="image/x-icon">
+    <script>
+        fetch('/img/symbols.svg')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.text();
+          })
+          .then(svgContent => {
+            document.body.innerHTML += svgContent;
+          })
+          .catch(error => {
+            console.error('Error fetching SVG:', error);
+        });
+    </script>
 </head>
 
 <body>
-
-    <!--Symbols-->
-    <svg id = "Symbols" xmlns="http://www.w3.org/2000/svg" style="display: none;"></svg>
-
-    <!--header-->
-    <header>
+    <header class="p-2">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <!--Logo-->
-                <div id = "logo" class="navbar-name" style="height: 50px; max-width: 260px;"></div>
+            <div class="container">
+                <a href="index.html" class="d-flex align-items-center me-2 link-body-emphasis text-decoration-none">
+                    <img src="img/logo.svg" alt="logo" style="height: 50px; width: 245px;">
+                </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Archives</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Category
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About Us</a>
-                        </li>
+                  
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="index.html" class="nav-link px-2 link-secondary">Home</a></li>
+                        <li><a href="archive/archive.html" class="nav-link px-2 link-body-emphasis">Archives</a></li>
+                        <li><a href="#" class="nav-link px-2 link-body-emphasis">Upload</a></li>
+                        <li><a href="#" class="nav-link px-2 link-body-emphasis">About Us</a></li>
                     </ul>
-                    <div><a class="link-dark ms-2" href="#"><svg width="36" height="36"><use xlink:href="#Account"/></svg></a></div>
+              
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                        <input type="search" class="form-control" placeholder="Search for Notes" aria-label="Search">
+                    </form>
+              
+                    <div class="nav g-md-2 text-end justify-content-center">
+                        <a style="background-color:#2b3c85;" role="button" 
+                        class="btn me-2 rounded-4 text-white" href="login/login.html">Login</a>
+                        <a id="signup" style="background-color:#f2a833;" role="button" 
+                        class="btn rounded-4 text-white" href="login/register.html">Sign-up</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -63,36 +67,43 @@
 
     <!-- main page -->
     <main>
-        <!--carousel-->
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-pause="false">
-            <div class="carousel-inner bg-black">
-                <div class="carousel-item active">
-                    <img src="slide.jpg" class="d-block w-100" style="opacity: 0.3;" alt="...">
+        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-pause="false">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner bg-dark">
+
+              <div class="carousel-item active">
+                <img src="img/slide.jpg" class="d-block h-100 w-100" style="opacity: 0.5;">
+              </div>
+
+              <div class="carousel-item">
+                <img src="img/slide.jpg" class="d-block h-100 w-100" style="opacity: 0.5;">
+              </div>
+
+              <div class="carousel-item">
+                <img src="img/slide.jpg" class="d-block h-100 w-100" style="opacity: 0.5;">
+              </div>
+
+              <div class="container font-monospace">
+                <div class="carousel-caption">
+                  <h1><b><span style="color: #1b43f7;">The Best Source</span>
+                       for <span style="color: #f2a833;">PDF Notes</span></b>
+                  </h1>
+                  <h3 class="opacity-100">
+                      Notes Archive is your free search engine for notes.<br> 
+                      Allowing you to download countless pdfs for free.<br>
+                      Enjoy the world of Notes Archive with no download limit and no hassle of any kind.
+                  </h3>
                 </div>
-                <div class="carousel-item">
-                    <img src="slide.jpg" class="d-block w-100" style="opacity: 0.3;" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="slide.jpg" class="d-block w-100" style="opacity: 0.3;" alt="...">
-                </div>
-                <div class="carousel-text-container font-monospace">
-                    <p style="font-size: 4vw;"><b><span style="color: #1b43f7;">
-                        The Best Source</span> for <span style="color: #f2a833;">PDF Notes</span></b>
-                    </p>
-                    <p style="font-size: 2.5vw; margin: 0 5vw 0 5vw">
-                        Notes Archive is your free search engine for notes.<br> 
-                        And allowing you to download countless pdfs for free.<br>
-                        Enjoy the word of PDF with no download limit and no<br> hassle of any kind.
-                    </p>
-                    <div class="d-flex flex-row" style="width: 45vw; min-height: 38px; height: 0.8vh;  margin-top: 15px;">
-                        <label for="newsletter1" class="visually-hidden">Search</label>
-                        <input id="newsletter1" type="text" class="form-control" placeholder="Search for Notes">
-                        <button class="btn btn-icon" type="button"><svg width="38" height="38" fill="white"><use xlink:href="#Search"/></svg></button>
-                    </div>
-                </div>
+              </div>
+
             </div>
         </div>
 
+        <!--Gallery-->
         <div class="container-sm mt-5">
             <h2 style="font-family:Arial, Helvetica, sans-serif">Recently Uploaded Notes</h2>
             <hr class="separator"><br>
@@ -101,16 +112,16 @@
                 <div class="container-sm col">
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row g-0">
-                          <div class="col-md-4">
-                                <img src="note_img.jpg" class="img-fluid rounded-start" alt="...">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div class="col-md-4">
+                                <img src="img/note_img.jpg" class="img-fluid rounded-start" alt="...">
                             </div>
-                          </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,16 +129,16 @@
                 <div class="container-sm col">
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row g-0">
-                          <div class="col-md-4">
-                                <img src="note_img.jpg" class="img-fluid rounded-start" alt="...">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div class="col-md-4">
+                                <img src="img/note_img.jpg" class="img-fluid rounded-start" alt="...">
                             </div>
-                          </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,16 +146,16 @@
                 <div class="container-sm col">
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row g-0">
-                          <div class="col-md-4">
-                                <img src="note_img.jpg" class="img-fluid rounded-start" alt="...">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div class="col-md-4">
+                                <img src="img/note_img.jpg" class="img-fluid rounded-start" alt="...">
                             </div>
-                          </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,16 +163,16 @@
                 <div class="container-sm col">
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row g-0">
-                          <div class="col-md-4">
-                                <img src="note_img.jpg" class="img-fluid rounded-start" alt="...">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div class="col-md-4">
+                                <img src="img/note_img.jpg" class="img-fluid rounded-start" alt="...">
                             </div>
-                          </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,7 +218,7 @@
                 </div>
 
                 <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-                    <p>&copy; 2022 Company, Inc. All rights reserved.</p>
+                    <p>&copy; 2024 Notes Archive, Inc. All rights reserved.</p>
                     <ul class="list-unstyled d-flex">
                       <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
                       <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
@@ -217,11 +228,9 @@
             </footer>
         </div>
     </main>
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stackblitz/sdk@1/bundles/sdk.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 </body>
 
 </html>
