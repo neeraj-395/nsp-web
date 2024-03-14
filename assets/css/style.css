@@ -11,7 +11,7 @@
 }
 
 @media screen and (min-width: 992px) and (max-width:1200px){
-  #signup {
+  .hideOn {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
@@ -20,4 +20,28 @@
     overflow: hidden !important;
     border: 0 !important;
   }
+}
+
+/*----------------------ARCHIVE INCLUDES----------------------*/
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+  display: block !important;
 }
