@@ -1,74 +1,76 @@
 // BASE URL FOR FETCHING CONTENT
-var baseURL = window.location.protocol + "//" + window.location.host;
+var baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
 //---------------------Load Header And Footer Into HTML Document---------------------//
-$(function(){
+$(function () {
+  var header = $.Deferred();
+  var footer = $.Deferred();
   $('#symbol').load(baseURL + "/assets/img/symbols.svg"); // load essentials symbols
-  $('#header').load(baseURL + "/partials/header.html", function() {
+  $('#header').load(baseURL + "/partials/header.html", function () { header.resolve(); }); // load header
+  $('#footer').load(baseURL + "/partials/footer.html", function () { footer.resolve(); }); // load footer
+
+  $.when(header, footer).done(function () {
     //-------Check The Login Status of Current User-------//
     $.ajax({
       url: baseURL + "/backend/status.inc.php",
       dataType: 'json',
-      success: function(result) {
+      success: function (result) {
         if (result.isLoggedIn) {
           var div = $('#status');
           div.find('a').eq(0).attr('href', '#').text('Profile');
           div.find('a').eq(1).attr('href', baseURL + "/backend/logout.inc.php").text('Log Out');
         }
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         console.error('There was a problem with the fetch operation:', error);
       }
     });
-    
-    //----Convert Root-Relative-Path To Absolute Links----//
-    $('a[href^="/"], img[src^="/"]').each(function() {
+
+    //----Convert Root-Relative-Path To relative Links----//
+    $('a[href^="/"], img[src^="/"]').each(function () {
       var filepath = $(this).attr('href');
       var imgpath = $(this).attr('src');
       // Update the href attribute with the relative path
-      if(filepath) $(this).attr('href', baseURL + filepath);
-      if(imgpath) $(this).attr('src', baseURL + imgpath)
+      if (filepath) $(this).attr('href', baseURL + filepath);
+      if (imgpath) $(this).attr('src', baseURL + imgpath)
     });
-  }); // load header
-  //-----------------------------------------------------//
-  $('#footer').load(baseURL + "/partials/footer.html"); // load footer
+  })
 });
 
-document.addEventListener('DOMContentLoaded', ()=>{
-//---------------------Load Notes Content into HTML Document---------------------//
-
-    // Add note cards along with thier meta data
-    if(container = document.getElementById('recent-notes')) {
-        const meta = {
-            title : "Card title",
-            desc : "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-            upload_time : "Last updated 3 mins ago",
-            path : baseURL + "/assets/img/note-img.jpg"
-        }
-
-        for (let i = 0; i < 6; i++)
-            container.innerHTML += recent_notes(meta.title,meta.desc,meta.upload_time,meta.path);
-
+document.addEventListener('DOMContentLoaded', () => {
+  //---------------------Load Notes Content into HTML Document---------------------//
+  if (container = document.getElementById('recent-notes')) {
+    const meta = {
+      title: "Card title",
+      desc: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      upload_time: "Last updated 3 mins ago",
+      path: baseURL + "/assets/img/note-img.jpg"
     }
-    // Add note cards along with thier meta data
-    if(container = document.getElementById('content'))  {
-        const meta = {
-            desc : "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-            upload_time : "9 min",
-            vlink : "#", // view link
-            dlink : "#" // download link
-        }
+    
+    // Add note cards along with there meta data
+    for (let i = 0; i < 6; i++)
+      container.innerHTML += recent_notes(meta.title, meta.desc, meta.upload_time, meta.path);
 
-        for (let i = 0; i < 9; i++)
-          container.innerHTML += search_notes(meta.desc,meta.upload_time,meta.vlink,meta.dlink);
+  }
+  if (container = document.getElementById('content')) {
+    const meta = {
+      desc: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      upload_time: "9 min",
+      vlink: "#", // view link
+      dlink: "#" // download link
     }
+    
+    // Add note cards along with thier meta data
+    for (let i = 0; i < 9; i++)
+      container.innerHTML += search_notes(meta.desc, meta.upload_time, meta.vlink, meta.dlink);
+  }
 });
 
 
 //___________________ Utils ___________________ //
 
 function recent_notes(title, desc, time, img_link) {
-    return `
+  return `
     <div class="container-sm col">
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
@@ -89,7 +91,7 @@ function recent_notes(title, desc, time, img_link) {
 }
 
 function search_notes(note_desc, time, view_link, download_link) {
-    return `
+  return `
     <div class="col">
         <div class="card shadow-sm">
           <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
@@ -107,4 +109,12 @@ function search_notes(note_desc, time, view_link, download_link) {
         </div>
     </div>
     `;
+}
+
+function getBaseURL(rootFolderName) {
+  if(window.location.pathname.includes(rootFolderName)){
+    return window.location.origin + rootFolderName;
+  } else {
+    return window.location.origin;
+  }
 }

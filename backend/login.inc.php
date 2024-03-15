@@ -1,11 +1,4 @@
 <?php
-session_start();
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"] === true){
-    EXIT_WITH_JSON(300, "", "/index.html");
-    exit;
-}
-
 require_once "../database/connect.php"; 
 set_error_handler('HANDLE_EXCEPTIONS'); // for any unexpected error
 
@@ -39,13 +32,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
 
                 if($stmt->fetch()){
                     if(password_verify($password, $hashed_password)){
+                        session_start();
                         // Store data in session variables
                         $_SESSION["user_id"] = $id;
                         $_SESSION["username"] = $username;
                         $_SESSION["name"] = $name;                           
                         $_SESSION["isLoggedIn"] = true;
                         
-                        EXIT_WITH_JSON(300, "", "/index.html", $conn, $stmt);
+                        EXIT_WITH_JSON(200, "", "/index.html", $conn, $stmt);
                     } else  {
                         // Password is not valid, display a generic error message
                         $login_err = "Invalid username or password.";

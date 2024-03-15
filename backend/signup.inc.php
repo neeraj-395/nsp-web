@@ -64,7 +64,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
         // Attempt to execute the prepared statement.
         if($stmt->execute()){
             $msg = "Congratulations! Your signup was successful.\nThank you for joining us!";
-            $redirect_to = "/auth/html/login.html";
+            $redirect_to = "/auth/pages/login.html";
             EXIT_WITH_JSON(200, $msg, $redirect_to, $conn, $stmt);
         } else {
             $err_msg = "Oops! something went wrong. Please try again later.";

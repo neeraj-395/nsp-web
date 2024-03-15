@@ -1,6 +1,6 @@
 'use strict';
 // BASE URL FOR FETCHING CONTENT
-var baseURL = window.location.protocol + "//" + window.location.host;
+var baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
 $(function () {
 	$("input[type='password'][data-eye]").each(function (i) {
@@ -49,7 +49,7 @@ $(function () {
 				$this.attr('type', 'password');
 				$this.removeClass("show");
 				$(this).html($("<img>",{
-					src: baseURL + '/assets/img/eye-show.svg',
+					src:  baseURL = '/assets/img/eye-show.svg',
 					height: '24px',
 					width: '24px'
 				}));
@@ -58,7 +58,7 @@ $(function () {
 				$this.val($("#passeye-" + i).val());
 				$this.addClass("show");
 				$(this).html($("<img>",{
-					src: baseURL + '/assets/img/eye-hide.svg',
+					src:  baseURL + '/assets/img/eye-hide.svg',
 					height: '24px',
 					width: '24px'
 				}));
@@ -137,23 +137,55 @@ function authenticate(form, filepath) {
 	})
 	.then(result => {
 		switch(result.status){
-			case 200: alert(result.message); // good reponse
+			case 200: if(result.message.length) alert(result.message);
 				if(result.redirect) window.location.href = baseURL + result.redirect;
 				break;
-			case 300: //good response
-				if(result.redirect) window.location.href = baseURL + result.redirect;
-				break;
-			case 404: alert(result.message); // bad response
+			case 404: alert(result.message); // Bad response
 				window.location.reload();
 				break;
-			case 500: alert(result.message); // bad response
+			case 500: alert(result.message); // Warning Reponse
 				window.location.reload();
 				break;
 			default: alert("Unexpected error occurred. Please try again later :-(");
 				window.location.reload();
+				break;
 		}
 	})
 	.catch(error => {
-		console.error('There was a problem with the fetch operation:', error);
+		err_msg = `An error has occurred, most likely due to an attempt to execute server-side scripts on a GitHub page, which is not permitted. 
+					Please run this project on a PHP-supported server for seamless functionality. 
+					Thank you for your understanding and cooperation.\n Ignore: ${error}`
+		alert(err_msg);
+		window.location.reload();
 	});
+}
+
+function custom_alert(status_code, message) {
+	var alert_type = {
+		200 : ' alert alert-success alert-dismissible fade show',
+		404 : 'alert alert-danger alert-dismissible fade show',
+		500 : 'alert alert-warning alert-dismissible fade show'
+	}
+
+	var div = document.createElement('div');
+	div.setAttribute('class', alert_type[status_code]);
+	div.setAttribute('role', 'alert');
+	div.innerHTML = message;
+	
+	var btn = document.createElement('button');
+	btn.setAttribute('type', 'button');
+	btn.setAttribute('class', 'btn-close');
+	btn.setAttribute('data-bs-dismiss', 'alert');
+	btn.setAttribute('aria-label', 'Close');
+	div.appendChild(btn);
+
+	document.body.appendChild(div);
+}
+
+function getBaseURL(rootFolderName) {
+	if(window.location.pathname.includes(rootFolderName)){
+	  return window.location.origin + rootFolderName;
+	} else {
+	  return window.location.origin;
+	}
 }
