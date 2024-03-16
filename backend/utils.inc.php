@@ -40,5 +40,5 @@ function HANDLE_EXCEPTIONS($errno, $errstr, $errfile, $errline){
     $message = "An issue has occurred($errno).
                 Please disregard the following error code and try again later:\n
                 $errstr\nErrorline = $errline\nFile: $errfile";
-    EXIT_WITH_JSON(404, $message);
+    EXIT_WITH_JSON(500, $message);
 }

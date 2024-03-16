@@ -49,7 +49,7 @@ $(function () {
 				$this.attr('type', 'password');
 				$this.removeClass("show");
 				$(this).html($("<img>",{
-					src:  baseURL = '/assets/img/eye-show.svg',
+					src:  baseURL + '/assets/img/eye-show.svg',
 					height: '24px',
 					width: '24px'
 				}));
@@ -75,11 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	const password = form.querySelector('#password');	
 
 	const errMsg = {
-		name: "Names must start with a capital letter and have capital letters after spaces. Only alphabetical characters are allowed.",
+		name: "Names must start with a capital letter and have capital letters after spaces. " +
+			  "Only alphabetical characters are allowed.",
 
-		username: "The username must start with a letter and can contain only letters, digits, or underscores, with a length between 8 and 30 characters.",
+		username: "The username must start with a letter and can contain only " + 
+				  "letters, digits, or underscores, with a length between 8 and 30 characters.",
 
-		password: "Please use at least 8 characters with a combination of uppercase and lowercase letters, digits, and symbols."
+		password: "Please use at least 8 characters with a combination of uppercase and " +
+				  "lowercase letters, digits, and symbols."
 	};
 
 	const pattern = {
@@ -140,10 +143,7 @@ function authenticate(form, filepath) {
 			case 200: if(result.message.length) alert(result.message);
 				if(result.redirect) window.location.href = baseURL + result.redirect;
 				break;
-			case 404: alert(result.message); // Bad response
-				window.location.reload();
-				break;
-			case 500: alert(result.message); // Warning Reponse
+			case 500: alert(result.message); // Bad response
 				window.location.reload();
 				break;
 			default: alert("Unexpected error occurred. Please try again later :-(");
@@ -152,34 +152,15 @@ function authenticate(form, filepath) {
 		}
 	})
 	.catch(error => {
-		err_msg = `An error has occurred, most likely due to an attempt to execute server-side scripts on a GitHub page, which is not permitted. 
-					Please run this project on a PHP-supported server for seamless functionality. 
-					Thank you for your understanding and cooperation.\n Ignore: ${error}`
-		alert(err_msg);
+		var err_msg = [
+			`An error has occurred, most likely due to an attempt to execute`,
+			`server-side scripts on a GitHub page, which is not permitted.`, 
+			`Please run this project on a PHP-supported server for seamless functionality.`,
+			`\nThank you for your understanding and cooperation.\n Ignore: ${error}`
+		];
+		alert(err_msg.join(" "));
 		window.location.reload();
 	});
-}
-
-function custom_alert(status_code, message) {
-	var alert_type = {
-		200 : ' alert alert-success alert-dismissible fade show',
-		404 : 'alert alert-danger alert-dismissible fade show',
-		500 : 'alert alert-warning alert-dismissible fade show'
-	}
-
-	var div = document.createElement('div');
-	div.setAttribute('class', alert_type[status_code]);
-	div.setAttribute('role', 'alert');
-	div.innerHTML = message;
-	
-	var btn = document.createElement('button');
-	btn.setAttribute('type', 'button');
-	btn.setAttribute('class', 'btn-close');
-	btn.setAttribute('data-bs-dismiss', 'alert');
-	btn.setAttribute('aria-label', 'Close');
-	div.appendChild(btn);
-
-	document.body.appendChild(div);
 }
 
 function getBaseURL(rootFolderName) {

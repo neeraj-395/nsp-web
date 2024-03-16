@@ -2,9 +2,9 @@
 require_once "../backend/utils.inc.php";
 set_error_handler('HANDLE_EXCEPTIONS'); // for any unexpected error
 
-$servername = "localhost";
-$username = "root";
-$password = "Nsingh(+)061";
+$servername = ""; // define it before use!!
+$username = "";  // define it before use!!
+$password = ""; // define it before use!!
 $dbname = "nsp_db";
 
 try {
