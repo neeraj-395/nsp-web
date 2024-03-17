@@ -156,7 +156,7 @@ function authenticate(form, filepath) {
 			`An error has occurred, most likely due to an attempt to execute`,
 			`server-side scripts on a GitHub page, which is not permitted.`, 
 			`Please run this project on a PHP-supported server for seamless functionality.`,
-			`\nThank you for your understanding and cooperation.\n Ignore: ${error}`
+			`\nThank you for your understanding and cooperation.`
 		];
 		alert(err_msg.join(" "));
 		window.location.reload();

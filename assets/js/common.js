@@ -15,9 +15,12 @@ $(function () {
       dataType: 'json',
       success: function (result) {
         if (result.isLoggedIn) {
-          var div = $('#status');
-          div.find('a').eq(0).attr('href', '#').text('Profile');
-          div.find('a').eq(1).attr('href', baseURL + "/backend/logout.inc.php").text('Log Out');
+          $('#login-false').addClass("visually-hidden");
+          $('#login-true').removeClass("visually-hidden");
+          $('#login-true > a').append("&nbsp;&nbsp" + result.name);
+        } else {
+          $('#login-false').removeClass("visually-hidden");
+          $('#login-true').addClass("visually-hidden");
         }
       },
       error: function (xhr, status, error) {
@@ -27,7 +30,7 @@ $(function () {
           `Please run this project on a PHP-supported server for seamless functionality.`,
           `\nThank you for your understanding and cooperation.\n Ignore:`
         ];
-        console.error(err_msg, error);
+        console.error(err_msg.join(" "), error);
       }
     });
 

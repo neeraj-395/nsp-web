@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body">
+<nav class="navbar navbar-expand-xl bg-body">
     <div class="container">
         <a href="/index.html" class="d-flex align-items-center me-2 link-body-emphasis text-decoration-none">
             <img src="/assets/img/logo.svg" alt="logo" style="height: 50px; width: 245px;">
@@ -13,7 +13,6 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/index.html" class="nav-link px-2 link-body-emphasis">Home</a></li>
                 <li><a href="/pages/archive.html" class="nav-link px-2 link-body-emphasis">Archives</a></li>
-                <li><a href="/pages/upload.html" class="nav-link px-2 link-body-emphasis">Upload</a></li>
                 <li><a href="/pages/about.html" class="nav-link px-2 link-body-emphasis">About Us</a></li>
             </ul>
       
@@ -21,12 +20,25 @@
                 <input name="search" type="search" class="form-control" placeholder="Search for Notes" aria-label="Search">
             </form>
       
-            <div id="status" class="nav g-md-2 text-end justify-content-center">
+            <div id="login-false" class="nav g-md-2 text-end justify-content-center visually-hidden">
                 <a style="background-color:#2b3c85;" role="button" 
-                class="btn me-2 rounded-5 text-white" href="/auth/pages/login.html">Login</a>
+                class="btn me-2 rounded-5 text-white" href="/pages/auth/login.html">Login</a>
                 <a style="background-color:#f2a833;" role="button" 
-                class="btn rounded-5 text-white hideOn" href="/auth/pages/signup.html">Sign Up</a>
+                class="btn rounded-5 text-white hideOn" href="/pages/auth/signup.html">Sign Up</a>
             </div>
+
+            <div id="login-true" class="d-flex nav-item dropdown justify-content-center">
+				<a data-bs-toggle="dropdown" class="nav-item nav-link dropdown-toggle">
+                    <img src="/assets/img/logo.ico" width="45px" height="45px" class="rounded-circle" alt="Avatar">
+                </a>
+				<div class="dropdown-menu rounded-3 mt-1" style="left: auto !important;">
+					<a href="/pages/user/profile.html" class="dropdown-item">Profile</a>
+					<a href="/pages/user/upload.html" class="dropdown-item">Upload</a>
+					<a href="/pages/user/manage.html" class="dropdown-item">Manage</a>
+					<div class="divider dropdown-divider"></div>
+					<a href="/backend/logout.inc.php" class="dropdown-item">Logout</a>
+                </div>
+			</div>
         </div>
     </div>
 </nav>
