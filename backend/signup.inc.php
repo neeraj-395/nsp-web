@@ -1,78 +1,64 @@
 <?php
 require_once "../database/connect.php";
-set_error_handler('HANDLE_EXCEPTIONS'); // for any unexpected error
+/* ERROR MESSAGES */
+define('USERNAME_EXIST','This username is already taken.');
 
-if($_SERVER["REQUEST_METHOD"] === "POST")
-{
+/* GOOD RESPONSE MESSAGES AND CONSTANTS */
+define('SIGNUP_SUCCESS', "Congratulations! Your signup was successful.\nThank you for joining us!");
+define('LOGIN_PAGE','/pages/auth/login.html');
+
+
+try {
+    if($_SERVER["REQUEST_METHOD"] !== "POST") EXIT_WITH_JSON(BAD_RESPONSE, INVALID_METHOD, null, $conn);
+
     $name = (isset($_POST['name'])) ? trim($_POST['name']) : null;
-    $username = (isset($_POST['username'])) ? trim($_POST['username']) : null;
     $email = (isset($_POST['email'])) ? trim($_POST['email']) : null;
+    $username = (isset($_POST['username'])) ? trim($_POST['username']) : null;
     $password = (isset($_POST['password'])) ? trim($_POST['password']) : null;
 
-    // Checking Validity. Although it already checked by the javascript logic
     if(!isValid($username, $password, $name, $email)) {
-        $err_msg = "Did you bypass the pattern rules of this signup page?";
-        EXIT_WITH_JSON(500, $err_msg, null, $conn);
+        EXIT_WITH_JSON(BAD_RESPONSE, $err_msg, null, $conn);
     }
-
     // Prepare a select statement for username availablity check.
     $sql = "SELECT user_id FROM user_data WHERE username = ?";
-
     // Preparing mysql connection and sql statement.
-    if($stmt = $conn->prepare($sql)) {
-        // Binding username parameter with sql statement.
-        $stmt->bind_param("s", $username);
+    $stmt = $conn->prepare($sql);
 
-        // Trying to execute the statement
-        if($stmt->execute()){
-            // Storing the result.
-            $stmt->store_result();
+    if(!$stmt) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn);
 
-            // If username exist end the script.
-            if($stmt->num_rows() === 1) {
-                $err_msg = "This username is already taken.";
-                EXIT_WITH_JSON(500, $err_msg, null, $conn, $stmt);
-            } else {  
-                $stmt->close();// Close statement.
-            }
-        } else {
-            $err_msg = "Oops! something went wrong. Please try again later.";
-            EXIT_WITH_JSON(500, $err_msg, null, $conn, $stmt);
-        }
+    $stmt->bind_param("s", $username);
 
-    } else {
-        $err_msg = "Oops! something went wrong. Please try again later.";
-        EXIT_WITH_JSON(500, $err_msg, null, $conn);
-    }
-    
+    if(!$stmt->execute()) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn, $stmt);
 
-    // Prepare an insert statement.
+    $stmt->store_result();
+
+    if($stmt->num_rows() === 1) EXIT_WITH_JSON(500, USERNAME_EXIST, null, $conn, $stmt);
+    else $stmt->close(); // closing current statement.
+
     $sql = "INSERT INTO user_data (
-        username,
-        name, 
-        password, 
-        email_id
-    ) VALUES (?,?,?,?)";
+                username,
+                name, 
+                password, 
+                email_id
+            ) VALUES (?,?,?,?)";
+    // Preparing mysql connection and sql statement.
+    $stmt = $conn->prepare($sql);
 
-    if($stmt = $conn->prepare($sql)){
-        // Bind variables to the prepared statement as parameter.
-        $stmt->bind_param("ssss", $username, $name, $hash_password, $email);
+    if(!$stmt) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn);
 
-        // Hashing password.
-        $hash_password = password_hash($password, PASSWORD_BCRYPT);
+    // Bind variables to the prepared statement as parameter.
+    $stmt->bind_param("ssss", $username, $name, $hash_password, $email);
 
-        // Attempt to execute the prepared statement.
-        if($stmt->execute()){
-            $msg = "Congratulations! Your signup was successful.\nThank you for joining us!";
-            $redirect_to = "/pages/auth/login.html";
-            EXIT_WITH_JSON(200, $msg, $redirect_to, $conn, $stmt);
-        } else {
-            $err_msg = "Oops! something went wrong. Please try again later.";
-            EXIT_WITH_JSON(500, $err_msg, null, $conn, $stmt);
-        }
+    // ENCRYPT PASSWORD
+    $hash_password = password_hash($password, PASSWORD_BCRYPT);
 
-    } else {
-        $err_msg = "Oops! something went wrong. Please try again later.";
-        EXIT_WITH_JSON(500, $err_msg, null, $conn);
-    }
-} else exit(500);
+    if(!$stmt->execute()) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn, $stmt);
+
+    EXIT_WITH_JSON(GOOD_RESPONSE, SIGNUP_SUCCESS, LOGIN_PAGE, $conn, $stmt);
+
+} catch (Exception $error) {
+    $message = "An unexpected error has occurred.\n"
+             . "Please disregard the following error and try again later:\n"
+             . $error->getMessage();
+    EXIT_WITH_JSON(BAD_RESPONSE, $message);
+}

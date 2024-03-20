@@ -3,6 +3,7 @@
 var baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
 $(function () {
+	$('<div id="cover-spin"></div>').appendTo('body'); // spinner
 	$("input[type='password'][data-eye]").each(function (i) {
 		var $this = $(this),
 			id = 'eye-password-' + i,
@@ -64,7 +65,6 @@ $(function () {
 				}));
 			}
 		});
-		$('<div id="cover-spin"></div>').appendTo('body'); // spinner
 	});
 });
 
@@ -140,7 +140,7 @@ function authenticate(form, filepath) {
 	})
 	.then(result => {
 		switch(result.status){
-			case 200: if(result.message.length) alert(result.message);
+			case 200: if(result.message) alert(result.message);
 				if(result.redirect) window.location.href = baseURL + result.redirect;
 				break;
 			case 500: alert(result.message); // Bad response
@@ -156,7 +156,8 @@ function authenticate(form, filepath) {
 			`An error has occurred, most likely due to an attempt to execute`,
 			`server-side scripts on a GitHub page, which is not permitted.`, 
 			`Please run this project on a PHP-supported server for seamless functionality.`,
-			`\nThank you for your understanding and cooperation.`
+			`\nThank you for your understanding and cooperation.`,
+			`\nError: ${error}`
 		];
 		alert(err_msg.join(" "));
 		window.location.reload();

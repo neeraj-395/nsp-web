@@ -1,62 +1,52 @@
 <?php
-require_once "../database/connect.php"; 
-set_error_handler('HANDLE_EXCEPTIONS'); // for any unexpected error
+require_once "../database/connect.php";
 
-if($_SERVER["REQUEST_METHOD"] === "POST")
-{
+/* ERROR MESSAGES AND CONSTANTS */
+define('HOME_PAGE', '/index.html');
+define('LOGIN_ERROR','Invalid username or password.');
+
+try{
+    if($_SERVER["REQUEST_METHOD"] !== "POST") EXIT_WITH_JSON(BAD_RESPONSE, INVALID_METHOD, null, $conn);
+
     $username = (isset($_POST['username'])) ? trim($_POST['username']) : null;
     $password = (isset($_POST['password'])) ? trim($_POST['password']) : null;
 
-    // Checking Validity. Although it already checked by the javascript logic
-    if(!isValid($username, $password)) {
-        $err_msg = "Did you bypass the pattern rules of this login page?";
-        EXIT_WITH_JSON(500, $err_msg, null, $conn);
-    }
+    if(!isValid($username, $password)) EXIT_WITH_JSON(BAD_RESPONSE, VALIDATION_FAILURE, null, $conn);
 
     // Prepare a select statement
-    $sql = "SELECT user_id, username, name, password FROM user_data WHERE username = ?";
+    $sql = "SELECT * FROM user_data WHERE username = ?";
+    $stmt = $conn->prepare($sql);
 
-    if($stmt = $conn->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
-        $stmt->bind_param("s", $username);
-        
-        // Attempt to execute the prepared statement
-        if($stmt->execute()){
-            // Store result
-            $stmt->store_result();
-            
-            // Check if username exists, if yes then verify password
-            if($stmt->num_rows == 1){                    
-                // Bind result variables
-                $stmt->bind_result($id, $username, $name, $hashed_password);
+    if(!$stmt) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn);
 
-                if($stmt->fetch()){
-                    if(password_verify($password, $hashed_password)){
-                        session_start();
-                        // Store data in session variables
-                        $_SESSION["user_id"] = $id;
-                        $_SESSION["username"] = $username;
-                        $_SESSION["name"] = $name;                           
-                        $_SESSION["isLoggedIn"] = true;
-                        
-                        EXIT_WITH_JSON(200, "", "/index.html", $conn, $stmt);
-                    } else  {
-                        // Password is not valid, display a generic error message
-                        $login_err = "Invalid username or password.";
-                        EXIT_WITH_JSON(500, $login_err, null, $conn, $stmt);
-                    }
-                }
-            } else{
-                // Username doesn't exist, display a generic error message
-                $login_err = "Invalid username or password.";
-                EXIT_WITH_JSON(500, $login_err, null, $conn, $stmt);
-            }
-        } else{
-            $err_msg = "Oops! something went wrong. Please try again later.\n";
-            EXIT_WITH_JSON(500, $err_msg, null, $conn, $stmt);
-        }
-    } else {
-        $err_msg = "Oops! something went wrong. Please try again later.\n";
-        EXIT_WITH_JSON(500, $err_msg, null, $conn);
+    // Bind variables to the prepared statement as parameters
+    $stmt->bind_param("s", $username);
+
+    // Attempt to execute the prepared statement
+    if(!$stmt->execute()) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE, null, $conn, $stmt);
+
+    $user = $stmt->get_result();
+
+    if($user->num_rows != 1) EXIT_WITH_JSON(BAD_RESPONSE, LOGIN_ERROR, null, $conn, $stmt);
+    
+    $user_data = $user->fetch_assoc();
+    
+    if(!password_verify($password, $user_data['password'])) 
+        EXIT_WITH_JSON(BAD_RESPONSE, LOGIN_ERROR, null, $conn, $stmt);
+
+    session_start();
+
+    foreach ($user_data as $key => $value) {
+        if($key !== "password") $_SESSION[$key] = $value;
     }
-} else exit(500);
+
+    $_SESSION["isLoggedIn"] = true;
+
+    EXIT_WITH_JSON(GOOD_RESPONSE, null, HOME_PAGE, $conn, $stmt);
+
+} catch (Exception $error) {
+    $err_msg = "An unexpected error has occurred.\n"
+             . "Please disregard the following error and try again later:\n"
+             . $error->getMessage();
+    EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+}
