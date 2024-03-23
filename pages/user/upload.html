@@ -35,13 +35,17 @@
 							<div class="mb-3">
 								<label for="front-img" class="form-label">Front Image of Note:</label>
 								<input type="file" class="form-control" id="front-img" name="front-img" accept="image/*" required>
-							</div>
+							</div><br>
 							<div class="mb-3">
+								<div class="form-label">PDF Attachment: </div>
 								<section class="droparea">
 									<img src="../../assets/img/pdf.svg" class="mb-2" height="48px" width="48px" alt="drop-pdf">
 									<div>Drop your Note file here!</div>
 									<small class="text-light-emphasis">In PDF format, Only one at a time</small>
 								</section>
+							</div>
+							<div class="mb-3 text-center">
+								<button type="button" class="btn btn-primary">Upload</button>
 							</div>
 						</form>
 					</div>	
@@ -60,8 +64,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
 			integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
 			crossorigin="anonymous"></script>
-		<script src="../../assets/js/common.js"></script>
-		<script src="../../assets/js/user.js"></script>
+		<script type="module" src="../../assets/js/partials-loader.js"></script>
+		<script type="module" src="../../assets/js/user-upload-handler.js"></script>
 	</body>
 
 </html>

@@ -1,4 +1,6 @@
 <?php
+define('BAD_RESPONSE', 500);
+define('GOOD_RESPONSE', 200);
 define('INVALID_METHOD', 'Unexpected Request Method');
 define('VALIDATION_FAILURE','Invalid details please try after sometime.');
 define('EXECUTION_FAILURE', 'Oops! something went wrong. Please try again later.');
@@ -25,10 +27,7 @@ function isValid(?string $username = "skip", ?string $password = "skip",
     return true;
 }
 
-function EXIT_WITH_JSON(int $status_code, ?string $message = null, string $redirect = null, 
-                                        ?mysqli $conn = null, ?mysqli_stmt $stmt = null) {
-    if($stmt !== null) $stmt->close(); // Close statement
-    if($conn !== null) $conn->close(); // Close connection
+function EXIT_WITH_JSON(int $status_code, ?string $message = null, string $redirect = null) {
     $response = array(
         'message' => $message,
         'redirect' => $redirect,

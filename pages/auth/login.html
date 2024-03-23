@@ -22,15 +22,15 @@
 							</a>
 						</div>
 						<div class="card fat">
-							<div class="card-body">
+							<div class="card-body"> 
 								<h4 class="card-title">Login</h4>
-								<form class="auth-validation" execute="/backend/login.inc.php" novalidate>
+								<form class="auth-validation" php-execute="/backend/auth-php/login.auth.php" novalidate>
 									<div class="form-group">
 										<label for="username">Username</label>
 										<input id="username" type="text" class="form-control" name="username" required
 											autocomplete="username">
 										<div class="invalid-feedback">
-											Username is invalid
+											The username must start with a letter and can contain only alphabets, digits, or underscore, between 8-30 characters.
 										</div>
 									</div>
 
@@ -43,7 +43,7 @@
 										<input id="password" type="password" class="form-control" name="password"
 											style="background-image: none;" required data-eye>
 										<div class="invalid-feedback">
-											Password is invalid
+											Please use at least 8 characters with a combination of uppercase and lowercase letters, digits, and symbols.
 										</div>
 									</div>
 
@@ -82,7 +82,7 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 			crossorigin="anonymous"></script>
-		<script src="../../assets/js/auth.js"></script>
+		<script type="module" src="../../assets/js/auth.js"></script>
 	</body>
 
 </html>

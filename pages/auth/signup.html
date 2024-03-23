@@ -24,12 +24,12 @@
 						<div class="card fat">
 							<div class="card-body">
 								<h4 class="card-title">Register</h4>
-								<form class="auth-validation" execute="/backend/signup.inc.php" novalidate>
+								<form class="auth-validation" php-execute="/backend/auth-php/signup.auth.php" novalidate>
 									<div class="form-group">
 										<label for="name">Name</label>
 										<input id="name" type="text" class="form-control" name="name" required autocomplete="name">
 										<div class="invalid-feedback">
-											What's your name?
+											Names must start with a capital letter and have capital letters after spaces. Only alphabetical characters are allowed.
 										</div>
 									</div>
 
@@ -38,7 +38,7 @@
 										<input id="username" type="text" class="form-control" name="username" required
 											autocomplete="username">
 										<div class="invalid-feedback">
-											Username is invalid
+											The username must start with a letter and can contain only alphabets, digits, or underscore, between 8-30 characters.
 										</div>
 									</div>
 
@@ -46,7 +46,7 @@
 										<label for="email">E-Mail Address</label>
 										<input id="email" type="email" class="form-control" name="email" required autocomplete="email">
 										<div class="invalid-feedback">
-											Your email is invalid
+											Please provide a valid email address. Ensure that the '@' symbol is included at the appropriate place.
 										</div>
 									</div>
 
@@ -55,15 +55,14 @@
 										<input id="password" type="password" class="form-control" name="password"
 											style="background-image: none;" required data-eye>
 										<div class="invalid-feedback">
-											Your password is invalid
+											Please use at least 8 characters with a combination of uppercase and lowercase letters, digits, and symbols.
 										</div>
 									</div>
 
 									<div class="form-group">
 										<div class="custom-checkbox custom-control">
 											<input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
-											<label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and
-													Conditions</a></label>
+											<label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and Conditions</a></label>
 											<div class="invalid-feedback">
 												You must agree with our Terms and Conditions
 											</div>
@@ -94,7 +93,7 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 			crossorigin="anonymous"></script>
-		<script src="../../assets/js/auth.js"></script>
+		<script type="module" src="../../assets/js/auth.js"></script>
 	</body>
 
 </html>
