@@ -1,4 +1,4 @@
-import { baseURL, formSubmitHandler } from './inc-js/utils.inc.js';
+import { baseURL, executePHP} from './inc-js/utils.inc.js';
 
 'use strict';
 $(function () {
@@ -79,21 +79,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		password: "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}"
 	}
 
-	form.addEventListener('submit', (event) => {
+	if(name) name.setAttribute('pattern', pattern.name);
+	if(username) username.setAttribute('pattern', pattern.username);
+	if(password) password.setAttribute('pattern', pattern.password);
+
+	form.addEventListener('submit', function (event) {
 		// Prevent Deafault form submission.
 		event.preventDefault();
-
-		if(name) name.setAttribute('pattern', pattern.name);
-		if(username) username.setAttribute('pattern', pattern.username);
-		if(password) password.setAttribute('pattern', pattern.password);
-
-		if (!form.checkValidity()) {
+	
+		if(!this.checkValidity()){
 			event.stopPropagation();
 		} else {
-			document.getElementById('cover-spin').style.display = 'block';
-			const phpPath = baseURL + form.getAttribute('php-execute');
-			formSubmitHandler(new FormData(form), phpPath);
+			const spinner = document.getElementById('cover-spin');
+			if(spinner) spinner.style.display = 'block';
+			const phpPath = baseURL + this.getAttribute('php-execute');
+			const requestInit = {
+				method: 'POST',
+				body:new FormData(this)
+			};
+			executePHP(phpPath, requestInit);
 		}
-		form.classList.add('was-validated');
+		this.classList.add('was-validated');
 	});
 });

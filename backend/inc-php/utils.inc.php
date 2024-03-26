@@ -1,9 +1,11 @@
 <?php
-define('BAD_RESPONSE', 500);
 define('GOOD_RESPONSE', 200);
+define('DATA_RESPONSE', 300);
+define('BAD_RESPONSE', 500);
 define('INVALID_METHOD', 'Unexpected Request Method');
-define('VALIDATION_FAILURE','Invalid details please try after sometime.');
-define('EXECUTION_FAILURE', 'Oops! something went wrong. Please try again later.');
+define('VALIDATION_FAILURE','Given inputs are invalid according to our backend.');
+define('USER_NOT_FOUND', "User Not Found!\nit appears that you are not currently logged in. "
+      ."Please log in first and try again.\nWe apologize for any inconvenience ['.']");
 
 function isValid(?string $username = "skip", ?string $password = "skip", 
                         ?string $name = "skip", ?string $email = "skip") {
@@ -27,11 +29,13 @@ function isValid(?string $username = "skip", ?string $password = "skip",
     return true;
 }
 
-function EXIT_WITH_JSON(int $status_code, ?string $message = null, string $redirect = null) {
+function EXIT_WITH_JSON(int $status_code, ?string $message = null,
+                        ?string $redirect = null, ?string $data = null) {
     $response = array(
         'message' => $message,
         'redirect' => $redirect,
-        'status' => $status_code
+        'status' => $status_code,
+        'data' => $data
     );
     header('Content-Type: application/json');
     echo json_encode($response);

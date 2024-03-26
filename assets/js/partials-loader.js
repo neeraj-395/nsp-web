@@ -24,10 +24,10 @@ $(function () {
       },
       error: function (xhr, status, error) {
         var err_msg = [
-          `An error has occurred, most likely due to an attempt to execute`,
-          `server-side scripts on a GitHub page, which is not permitted.`,
-          `Please run this project on a PHP-supported server for seamless functionality.`,
-          `\nThank you for your understanding and cooperation.\n\nIgnore:`
+          `An error occurred while executing the PHP file. `,
+          `Please ensure that you are not attempting to run this website on GitHub Pages.\n`,
+          `We apologize for any inconvenience ['.']\n`,
+          `Error: ${error.message}`
         ];
         console.error(err_msg.join(" "), error);
       }

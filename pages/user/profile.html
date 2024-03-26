@@ -25,35 +25,42 @@
 								<div class="d-flex flex-column align-items-center text-center">
 									<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Admin"
 										class="rounded-circle p-1 bg-primary" width="110">
-									<div class="mt-3">
+									<div id="img-desc" class="mt-3">
 										<h4>Unknown User</h4>
 										<p class="text-secondary mb-1">unknown</p>
 									</div>
 								</div>
 								<hr class="my-4">
 								<!--SOCIAL LINKS-->
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="bi bi-globe me-1"></i>Website</h6>
-										<span class="text-secondary">unknown</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="bi bi-github me-1"></i>Github</h6>
-										<span class="text-secondary">unknown</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="bi bi-twitter-x me-1"></i>Twitter</h6>
-										<span class="text-secondary">unknown</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="bi bi-instagram me-1"></i>Instagram</h6>
-										<span class="text-secondary">unknown</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-										<h6 class="mb-0"><i class="bi bi-reddit me-1"></i>Reddit</h6>
-										<span class="text-secondary">unknown</span>
-									</li>
-								</ul>
+								<form id="user-social-set" php-execute="/backend/user-php/update.uss.php" novalidate>
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+											<h6 class="mb-0"><i class="bi bi-github me-1"></i>Github</h6>
+											<input type="text" name="github" class="form-control form-control-sm mt-2" placeholder="username" hidden>
+											<a role="button" name="github" class="text-secondary text-decoration-none"></a>
+										</li>
+										<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+											<h6 class="mb-0"><i class="bi bi-twitter-x me-1"></i>Twitter</h6>
+											<input type="text" name="twitter" class="form-control form-control-sm mt-2" placeholder="username" hidden>
+											<a role="button" name="twitter" class="text-secondary text-decoration-none"></a>
+										</li>
+										<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+											<h6 class="mb-0"><i class="bi bi-instagram me-1"></i>Instagram</h6>
+											<input type="text" name="instagram" class="form-control form-control-sm mt-2" placeholder="username" hidden>
+											<a role="button" name="instagram" class="text-secondary text-decoration-none"></a>
+										</li>
+										<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+											<h6 class="mb-0"><i class="bi bi-reddit me-1"></i>Reddit</h6>
+											<input type="text" name="reddit" class="form-control form-control-sm mt-2" placeholder="username" hidden>
+											<a role="button" name="reddit" class="text-secondary text-decoration-none"></a>
+										</li>
+										<li id="socialForm-btns" class="list-group-item d-flex justify-content-center align-items-center flex-wrap mt-1">
+											<button type="button" class=" btn btn-sm btn-dark w-100 fw-semibold">Edit social</button>
+											<button type="submit" style="width: 40%;" class="btn btn-sm btn-primary me-2 fw-semibold" hidden>Save</button>
+											<button type="reset" style="width: 40%;" class="btn btn-sm btn-warning fw-semibold" hidden>Cancel</button>
+										</li>
+									</ul>
+								</form>	
 							</div>
 						</div>
 					</div>
@@ -61,14 +68,14 @@
 					<div class="col-md-8">
 						<div class="card mb-3">
 							<div class="card-body">
-								<form id="user-details" php-execute="/backend/user-php/update.ud.php" novalidate>
+								<form id="user-data" php-execute="/backend/user-php/update.ud.php" novalidate>
 									<div class="row">
 										<div class="col-sm-3">
-											<div class="mb-1 h6">Full Name:</div>
+											<div class="mb-2 h6">Full Name:</div>
 										</div>
 										<div class="col-sm-9 text-secondary">
-											<input name="name" type="text" class="form-control" hidden autocomplete="name" pattern="^[A-Z][a-z]*( [A-Z][a-z]*)*$">
-											<a role="button" user-data>Unknown</a>
+											<input name="name" type="text" class="form-control" hidden autocomplete="name" pattern="^[A-Z][a-z]*( [A-Z][a-z]*)*$" required>
+											<a role="button" name="name">Unknown</a>
 											<div class="invalid-feedback">
 												Names must start with a capital letter and have capital letters after spaces. Only alphabetical characters are allowed.
 											</div>
@@ -77,11 +84,11 @@
 									<hr>
 									<div class="row">
 										<div class="col-sm-3">
-											<div class="mb-1 h6">Email:</div>
+											<div class="mb-2 h6">Email:</div>
 										</div>
 										<div class="col-sm-9 text-secondary">
-											<input name="email" type="email" class="form-control" hidden autocomplete="email">
-											<a role="button" user-data>Unknown</a>
+											<input name="email" type="email" class="form-control" hidden autocomplete="email" required>
+											<a role="button" name="email">abc@xyz</a>
 											<div class="invalid-feedback">
 												Please provide a valid email address. Ensure that the '@' symbol is included at the appropriate place.
 											</div>
@@ -90,11 +97,11 @@
 									<hr>
 									<div class="row">
 										<div class="col-sm-3">
-											<div class="mb-1 h6">Contact:</div>
+											<div class="mb-2 h6">Contact:</div>
 										</div>
 										<div class="col-sm-9 text-secondary">
 											<input name="contact" type="tel" class="form-control" hidden pattern="^\d{10}$">
-											<a role="button" user-data>Unknown</a>
+											<a role="button" name="contact"></a>
 											<div class="invalid-feedback">
 												Please enter a 10-digit contact number without any spaces or special characters.
 											</div>
@@ -103,21 +110,22 @@
 									<hr>
 									<div class="row">
 										<div class="col-sm-3">
-											<div class="mb-1 h6">Profession:</div>
+											<div class="mb-2 h6">Profession:</div>
 										</div>
 										<div class="col-sm-9 text-secondary">
 											<input name="profession" type="text" class="form-control" hidden>
-											<a role="button" user-data>Unknown</a>
+											<a role="button" name="profession"></a>
 											<div class="invalid-feedback">
 												Please enter only alphabetic characters.
 											</div>
 										</div>
 									</div>
-									<hr hidden>
-									<div class="row" hidden>
-										<div class="col-sm-12">
-											<button type="submit" class="btn btn-primary px-2 me-2">Save</button>
-											<button type="reset" class="btn btn-warning px-2">Cancel</button>
+									<hr>
+									<div class="row">
+										<div id="userForm-btns" class="col-sm-12 text-center">
+											<button type="button" class="btn btn-dark px-2 w-50 fw-semibold">Edit profile</button>
+											<button type="submit" class="btn btn-primary px-2 w-25 me-2 fw-semibold" hidden>Save</button>
+											<button type="reset" class="btn btn-warning w-25 px-2 fw-semibold" hidden>Cancel</button>
 										</div>
 									</div>
 								</form>
@@ -162,6 +170,8 @@
 				</div>
 			</div>
 		</div>
+		<!--SPINNER-->
+		<div id="cover-spin"></div>
 
 		<!--FOOTER-->
 		<footer class="bg-dark text-center text-white" style="padding: 2em 0;" id="footer"></footer>

@@ -7,10 +7,19 @@ CREATE TABLE IF NOT EXISTS user_data (
     username VARCHAR(50) NOT NULL,
     `name`  VARCHAR(50) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
-    email_id VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     reg_date DATE DEFAULT (CURRENT_DATE) NOT NULL,
-    contact VARCHAR(15), /* Optional Field */
-    profession VARCHAR(50) /* Optional Field */
+    contact VARCHAR(15), 
+    profession VARCHAR(50) 
+);
+
+CREATE TABLE IF NOT EXISTS user_social_set (
+    user_id INT PRIMARY KEY,
+    github VARCHAR(50), 
+    instagram VARCHAR(50), 
+    twitter VARCHAR(50), 
+    reddit VARCHAR(50), 
+    FOREIGN KEY (user_id) REFERENCES user_data (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS note_data (
@@ -22,27 +31,3 @@ CREATE TABLE IF NOT EXISTS note_data (
     view_url TEXT,
     download_url TEXT
 );
-
-CREATE TABLE IF NOT EXISTS user_handles (
-    user_id INT PRIMARY KEY,
-    wesbite_url VARCHAR(50), /* Optional Field */
-    github_handle VARCHAR(50), /* Optional Field */
-    insta_handle VARCHAR(50), /* Optional Field */
-    twitter_handle VARCHAR(50), /* Optional Field */
-    reddit_handle VARCHAR(50), /* Optional Field */
-    FOREIGN KEY (user_id) REFERENCES user_data (user_id)
-);
-
-/*CREATE VIEW IF NOT EXISTS user_profile_view AS
-SELECT ud.user_id,
-       ud.name,
-       ud.contact,
-       ud.profession
-       uh.website_url,
-       uh.github_handle,
-       uh.insta_handle,
-       uh.twitter_handle,
-       uh.reddit_handle,
-FROM user_data ud
-LEFT JOIN user_handles uh ON ud.user_id = uh.user_id;*/
-

@@ -2,9 +2,9 @@
 session_start();
 
 header('Content-Type: application/json');
-if(isset($_SESSION['isLoggedIn']))
+if(isset($_SESSION['user_id']))
     echo json_encode(array(
-        'isLoggedIn' => $_SESSION['isLoggedIn'],
+        'isLoggedIn' => true,
         'name' => $_SESSION['name']
     ));
 else 

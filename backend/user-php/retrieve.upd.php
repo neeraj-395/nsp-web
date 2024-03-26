@@ -1,17 +1,23 @@
 <?php
-/* retrieve.upd.php =>  RETRIEVE USER PROFILE DATA PHP */
-require_once "../../database/connect.db.php";
+/* retrieve.upd.php => RETRIEVE USER PROFILE DATA PHP */
+require_once('../inc-php/utils.inc.php');
+
+define('LOGIN_PAGE','/pages/auth/login.html');
 
 session_start();
 
-try {
-  if($_SERVER["REQUEST_METHOD"] !== "GET") EXIT_WITH_JSON(BAD_RESPONSE, INVALID_METHOD);
-} catch (PDOException $error) {
-  $err_msg = "An unexpected error has occurred.\n"
-             . "Please disregard the following error and try again later:\n"
-             . $error->getMessage()
-             . "\nLine: ".$error->getLine()
-             . "\nFile: ".$error->getFile();
+if(isset($_SESSION['user_id'])){
+  $userProfileData = [];
 
-    EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+  foreach($_SESSION as $key => $value){
+    $userProfileData[$key] = $value;
+  }
+
+  $data = json_encode($userProfileData);
+
+  EXIT_WITH_JSON(DATA_RESPONSE, null, null, $data);
+
+} else {
+  EXIT_WITH_JSON(BAD_RESPONSE, USER_NOT_FOUND, LOGIN_PAGE);
 }
+exit;

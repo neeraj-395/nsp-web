@@ -1,14 +1,16 @@
 <?php
 require_once "../../database/connect.db.php";
+
 /* ERROR MESSAGES */
 define('USERNAME_EXIST','This username is already taken.');
 
 /* GOOD RESPONSE MESSAGES AND CONSTANTS */
-define('SIGNUP_SUCCESS', "Congratulations! Your signup was successful.\nThank you for joining us!");
+define('SIGNUP_SUCCESS', 'Congratulations! Your signup was successful. Thank you for joining us!');
 define('LOGIN_PAGE','/pages/auth/login.html');
 
 
 try {
+    
     if($_SERVER["REQUEST_METHOD"] !== "POST") EXIT_WITH_JSON(BAD_RESPONSE, INVALID_METHOD);
 
     $name = isset($_POST['name']) ? trim($_POST['name']) : null;
@@ -17,53 +19,61 @@ try {
     $password = isset($_POST['password']) ? trim($_POST['password']) : null;
 
     if(!isValid($username, $password, $name, $email)) {
-        EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+        EXIT_WITH_JSON(BAD_RESPONSE, VALIDATION_FAILURE);
     }
-    // Prepare a select statement for username availablity check.
-    $sql = "SELECT user_id FROM user_data WHERE username = :username";
-    // Preparing mysql connection and sql statement.
+
+    /* PREPARE SELECTION STATEMENT */
+    $sql = "SELECT user_id FROM ".USER_DATA_TABLE." WHERE username = :username";
     $stmt = $pdo->prepare($sql);
 
-    if(!$stmt) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE);
+    $stmt->bindValue(':username', $username, PDO::PARAM_STR);
 
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-
-    if(!$stmt->execute()) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE);
+    $stmt->execute();
 
     $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($userdata) EXIT_WITH_JSON(500, USERNAME_EXIST);
+    if($userdata) EXIT_WITH_JSON(BAD_RESPONSE, USERNAME_EXIST);
 
-    $sql = "INSERT INTO user_data (
+    $sql = "INSERT INTO ".USER_DATA_TABLE." (
                 username,
                 name, 
                 password, 
-                email_id
-            ) VALUES (:username,:name,:password,:email_id)";
-    // Preparing mysql connection and sql statement.
+                email
+            ) VALUES (:username, :name, :password, :email)";
+
+    /* PREPARE INSERTION STATEMENT */
     $stmt = $pdo->prepare($sql);
 
-    if(!$stmt) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE);
-
-    // Bind variables to the prepared statement as parameter.
+    /* BIND VARIABLES TO THE PREPARED STATEMENT AS PARAMETER. */
     $stmt->bindParam(':username', $username, PDO::PARAM_STR);
     $stmt->bindParam(':name', $name, PDO::PARAM_STR);
     $stmt->bindParam(':password', $hash_password, PDO::PARAM_STR);
-    $stmt->bindParam(':email_id', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
 
     // ENCRYPT PASSWORD
     $hash_password = password_hash($password, PASSWORD_BCRYPT);
 
-    if(!$stmt->execute()) EXIT_WITH_JSON(BAD_RESPONSE, EXECUTION_FAILURE);
+    $stmt->execute();
+
+    /* GET THE LAST INSERTED USER ID */
+    $user_id = (int)$pdo->lastInsertId();
+
+    /* INTIALIZE USER SOCIAL SET TUPLE WITH NULL VALUES */
+    $sql = "INSERT INTO ".SOCIAL_SET_TABLE." (user_id) VALUES (:user_id)";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+    $stmt->execute();
 
     EXIT_WITH_JSON(GOOD_RESPONSE, SIGNUP_SUCCESS, LOGIN_PAGE);
 
-} catch (Exception $error) {
-    $err_msg = "An unexpected error has occurred.\n"
-             . "Please disregard the following error and try again later:\n"
-             . $error->getMessage()
-             . "\nLine: ".$error->getLine()
-             . "\nFile: ".$error->getFile();
-
+} catch (PDOException $error) {
+    $err_msg = "Our backend is currently experiencing issues.\n" 
+             . "Please try again later. Thank You ['.']\n"
+             . "Error Message: " . $error->getMessage() . "\n"
+             . "Line: " . $error->getLine() . "\n"
+             . "File: " . $error->getFile();
+    
     EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
 }
