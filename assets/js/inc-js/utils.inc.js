@@ -1,34 +1,6 @@
 // BASE URL FOR FETCHING CONTENT
 export const baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
-export const fileDropHandler = ()=>{
-  const droparea = document.querySelector('.droparea');
-  if(!droparea) return;
-  const active = () => droparea.classList.add("green-border");
-  const inactive = () => droparea.classList.remove("green-border");
-  const prevents = (e) => e.preventDefault();
-
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evtName => {
-      droparea.addEventListener(evtName, prevents);
-  });
-
-  ['dragenter', 'dragover'].forEach(evtName => {
-      droparea.addEventListener(evtName, active);
-  });
-
-  ['dragleave', 'drop'].forEach(evtName => {
-      droparea.addEventListener(evtName, inactive);
-  });
-
-  droparea.addEventListener("drop", (e) => {
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    const fileArray = [...files];
-    console.log(files); // FileList
-    console.log(fileArray);
-  });
-}
-
 function getBaseURL(rootFolderName) {
 	if(window.location.pathname.includes(rootFolderName)){
 	  return window.location.origin + rootFolderName;
@@ -42,10 +14,10 @@ export function executePHP(phpPath, requestInit, callBack) {
 	.then(response => {
 		if (!response.ok)
 			throw new Error('Network response was not ok');
-		else {
-			const spinner = document.getElementById('cover-spin');
-    	if(spinner) spinner.style.display = 'none';
-		}
+
+		const spinner = document.getElementById('cover-spin');
+		if(spinner) spinner.style.display = 'none';
+
 		return response.json();
 	})
 	.then(result => {
@@ -60,7 +32,7 @@ export function executePHP(phpPath, requestInit, callBack) {
         if(result.redirect) window.location.href = baseURL + result.redirect;
 				else window.location.reload();
 				break;
-			default: alert("Unexpected status code received while executing PHP script.");
+			default: alert(result);
 				window.location.reload();
 				break;
 		}
@@ -69,9 +41,10 @@ export function executePHP(phpPath, requestInit, callBack) {
 		var err_msg = [
 			`An error occurred while executing the PHP file. `,
 			`Please ensure that you are not attempting to run this website on GitHub Pages.\n`,
-			`We apologize for any inconvenience ['.']\n`,
+			`We apologize for any inconvenience [' . ']\n`,
 			`Error: ${error.message}`
 		];
+		console.error(error.message);
 		alert(err_msg.join(" "));
 		window.location.reload();
 	});

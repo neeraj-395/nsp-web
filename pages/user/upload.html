@@ -23,32 +23,35 @@
 				<div class="card">
 					<div class="card-header">All fields are required to be filled</div>
 					<div class="card-body">
-						<form enctype="multipart/form-data">
+						<form id="upload-form" php-execute="/backend/user-php/upload.note.php" enctype="multipart/form-data"
+							novalidate>
 							<div class="mb-3">
 								<label for="title" class="form-label">Title:</label>
-								<input type="text" name="title" id="title" class="form-control" required>
+								<input type="text" name="title" id="title" class="form-control" maxlength="50" required>
 							</div>
 							<div class="mb-3">
-								<label for="description" class="form-label">Description:</label>
-								<textarea class="form-control" id="description" rows="3" required></textarea>
+								<label for="desc" class="form-label">Description:</label>
+								<textarea class="form-control" name="desc" id="desc" rows="3" maxlength="200" required></textarea>
 							</div>
 							<div class="mb-3">
-								<label for="front-img" class="form-label">Front Image of Note:</label>
-								<input type="file" class="form-control" id="front-img" name="front-img" accept="image/*" required>
+								<label for="cover-img" class="form-label">Front Image of Note:</label>
+								<input type="file" class="form-control" id="cover-img" name="cover-img" accept="image/png" required>
+								<div class="invalid-feedback">Only png format is allowed.</div>
 							</div><br>
 							<div class="mb-3">
 								<div class="form-label">PDF Attachment: </div>
-								<section class="droparea">
-									<img src="../../assets/img/pdf.svg" class="mb-2" height="48px" width="48px" alt="drop-pdf">
-									<div>Drop your Note file here!</div>
-									<small class="text-light-emphasis">In PDF format, Only one at a time</small>
+								<section class="form-control droparea" style="background-image: none; padding: 0;">
+									<i class="bi bi-filetype-pdf"></i>
+									<h6 class="fw-semibold mb-0">Drop your Note file here!</h6>
+									<small class="text-light-emphasis">Only pdf format is allowed</small>
+									<input type="file" name="note-file" accept="application/pdf" hidden>
 								</section>
 							</div>
 							<div class="mb-3 text-center">
-								<button type="button" class="btn btn-primary">Upload</button>
+								<button type="submit" class="btn btn-primary">Upload</button>
 							</div>
 						</form>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

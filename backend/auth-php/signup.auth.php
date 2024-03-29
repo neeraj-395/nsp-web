@@ -1,5 +1,6 @@
 <?php
-require_once "../../database/connect.db.php";
+require_once ('../../database/connect.db.php');
+require_once ('../inc-php/auth.inc.php');
 
 /* ERROR MESSAGES */
 define('USERNAME_EXIST','This username is already taken.');
@@ -45,10 +46,10 @@ try {
     $stmt = $pdo->prepare($sql);
 
     /* BIND VARIABLES TO THE PREPARED STATEMENT AS PARAMETER. */
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+    $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+    $stmt->bindValue(':name', $name, PDO::PARAM_STR);
     $stmt->bindParam(':password', $hash_password, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
 
     // ENCRYPT PASSWORD
     $hash_password = password_hash($password, PASSWORD_BCRYPT);
@@ -69,11 +70,6 @@ try {
     EXIT_WITH_JSON(GOOD_RESPONSE, SIGNUP_SUCCESS, LOGIN_PAGE);
 
 } catch (PDOException $error) {
-    $err_msg = "Our backend is currently experiencing issues.\n" 
-             . "Please try again later. Thank You ['.']\n"
-             . "Error Message: " . $error->getMessage() . "\n"
-             . "Line: " . $error->getLine() . "\n"
-             . "File: " . $error->getFile();
-    
-    EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+    /* HANDLE EXCEPTIONS */
+    ExceptionHandler($error);
 }

@@ -1,5 +1,6 @@
 <?php
-require_once "../../database/connect.db.php";
+require_once ('../../database/connect.db.php');
+require_once ('../inc-php/auth.inc.php');
 
 /* ERROR MESSAGES AND CONSTANTS */
 define('HOME_PAGE', '/index.html');
@@ -35,7 +36,7 @@ try{
     $sql = "SELECT *FROM ".USER_PROFILE_VIEW." WHERE user_id = :user_id";
     $stmt = $pdo->prepare($sql);
 
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 
     $stmt->execute();
 
@@ -51,11 +52,6 @@ try{
     EXIT_WITH_JSON(GOOD_RESPONSE, null, HOME_PAGE);
 
 } catch (PDOException $error) {
-    $err_msg = "Our backend is currently experiencing issues.\n" 
-             . "Please try again later. Thank You ['.']\n"
-             . "Error Message: " . $error->getMessage() . "\n"
-             . "Line: " . $error->getLine() . "\n"
-             . "File: " . $error->getFile();
-    
-    EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+    /* HANDLE EXCEPTIONS */
+    ExceptionHandler($error);
 }

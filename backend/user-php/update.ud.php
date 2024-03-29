@@ -1,6 +1,6 @@
 <?php
 /* update.ud.php => UPDATE USERDATA PHP */
-require_once "../../database/connect.db.php";
+require_once ('../../database/connect.db.php');
 
 /* ERROR MESSAGES */
 define('EMPTY_REQUEST','Please provide the required information in the form before proceeding');
@@ -57,11 +57,6 @@ try {
   EXIT_WITH_JSON(GOOD_RESPONSE, UPDATE_SUCCESS,  PROFILE_PAGE);
                 
 } catch (PDOException $error) {
-  $err_msg = "Our backend is currently experiencing issues.\n" 
-           . "Please try again later. Thank You ['.']\n"
-           . "Error Message: " . $error->getMessage() . "\n"
-           . "Line: " . $error->getLine() . "\n"
-           . "File: " . $error->getFile();
-  
-  EXIT_WITH_JSON(BAD_RESPONSE, $err_msg);
+  /* HANDLE EXCEPTIONS */
+  ExceptionHandler($error);
 }

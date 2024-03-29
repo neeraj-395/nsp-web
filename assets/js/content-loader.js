@@ -24,7 +24,7 @@ function note_cards(meta) {
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="${meta.path}" class="img-fluid rounded-start" alt="...">
+                    <img src="${meta.path}" class="img-fluid rounded-start">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
