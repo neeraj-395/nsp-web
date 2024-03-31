@@ -1,5 +1,9 @@
 import {baseURL} from './inc-js/utils.inc.js';
 
+/* RETRIEVE NOTE-META DATA TO SHOW INTO WEB PAGE */
+
+
+
 //---------------------Load Notes Content into HTML Document---------------------//
 $(function(){
   if ($('#content')) {
@@ -33,9 +37,9 @@ function note_cards(meta) {
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
                             <a role="button" class="btn btn-sm btn-outline-secondary" 
-                            href="${meta.vlink}">View</a>
+                            href="${meta.vlink}" target="__blank">View</a>
                             <a role="button" class="btn btn-sm btn-outline-secondary" 
-                            href="${meta.dlink}">Download</a>
+                            href="${meta.dlink}" download>Download</a>
                           </div>
                           <small class="text-body-secondary">${meta.time}</small>
                         </div>
