@@ -2,6 +2,9 @@
 define('GOOD_RESPONSE', 200);
 define('DATA_RESPONSE', 300);
 define('BAD_RESPONSE', 500);
+define('HOME_PAGE', '/index.html');
+define('LOGIN_PAGE','/pages/auth/login.html');
+define('PROFILE_PAGE', '/pages/user/profile.html');
 define('INVALID_METHOD', 'Unexpected Request Method');
 define('VALIDATION_FAILURE','Given inputs are invalid according to our backend.');
 define('USER_NOT_FOUND', "User Not Found!\nit appears that you are not currently logged in. "

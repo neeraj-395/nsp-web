@@ -38,3 +38,16 @@ function checkDirectory($directoryPath) {
     }
     return true;
 }
+
+function fileDelete($file_path){
+    // Check if the file exists
+    if (file_exists($file_path)) {
+        // Attempt to delete the file
+        if (unlink($file_path)) {
+            return true;
+        } else {
+            return false;
+        }  
+    }
+    return false;
+}

@@ -102,3 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		this.classList.add('was-validated');
 	});
 });
+
+window.addEventListener('load', function() {
+  const spinner = document.getElementById('cover-spin');
+	if(spinner) spinner.style.display = 'none';
+});

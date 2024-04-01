@@ -5,9 +5,8 @@ require_once ('../inc-php/auth.inc.php');
 /* ERROR MESSAGES */
 define('USERNAME_EXIST','This username is already taken.');
 
-/* GOOD RESPONSE MESSAGES AND CONSTANTS */
+/* GOOD RESPONSE MESSAGES */
 define('SIGNUP_SUCCESS', 'Congratulations! Your signup was successful. Thank you for joining us!');
-define('LOGIN_PAGE','/pages/auth/login.html');
 
 
 try {

@@ -3,7 +3,6 @@ require_once ('../../database/connect.db.php');
 require_once ('../inc-php/auth.inc.php');
 
 /* ERROR MESSAGES AND CONSTANTS */
-define('HOME_PAGE', '/index.html');
 define('LOGIN_ERROR','Invalid username or password.');
 
 try{

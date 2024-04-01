@@ -1,9 +1,5 @@
 import {baseURL} from './inc-js/utils.inc.js';
 
-/* RETRIEVE NOTE-META DATA TO SHOW INTO WEB PAGE */
-
-
-
 //---------------------Load Notes Content into HTML Document---------------------//
 $(function(){
   if ($('#content')) {

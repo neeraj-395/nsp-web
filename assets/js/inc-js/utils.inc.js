@@ -46,6 +46,5 @@ export function executePHP(phpPath, requestInit, callBack) {
 		];
 		console.error(error.message);
 		alert(err_msg.join(" "));
-		window.location.reload();
 	});
 }
