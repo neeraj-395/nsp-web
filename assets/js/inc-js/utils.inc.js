@@ -6,12 +6,8 @@ export function executePHP(phpPath, requestInit, callBack) {
 	.then(response => {
 		if (!response.ok)
 			throw new Error('Network response was not ok');
-
-		if(response.headers.get('content-type') === 'application/json'){
+		
 			return response.json();
-		} else {
-			return response.text();
-		}
 	})
 	.then(result => {
     switch(result.status){
