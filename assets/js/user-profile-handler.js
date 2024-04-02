@@ -85,9 +85,6 @@ const formSubmit = (form, formData, event)=>{
   if(!form.checkValidity()){
     event.stopPropagation();
   } else {
-    const spinner = document.getElementById('cover-spin');
-    if(spinner) spinner.style.display = 'block';
-
     const phpPath = baseURL + form.getAttribute('php-execute');
     const requestInit = {
       method: 'POST',

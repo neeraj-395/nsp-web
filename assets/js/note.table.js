@@ -22,11 +22,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     deleteBtns.forEach(function(button) {
       button.addEventListener('click', ()=>{
           const noteId = button.getAttribute('delete-note-id');
-          const phpPath = baseURL + '/backend/user-php/delete.note.php?note_id='+noteId;
-
-          const spinner = document.getElementById('cover-spin');
-			    if(spinner) spinner.style.display = 'block';
-
+          const phpPath = baseURL + '/backend/user-php/delete.note.php?note_id=' + noteId;
           executePHP(phpPath, requestInit);
       });
     });

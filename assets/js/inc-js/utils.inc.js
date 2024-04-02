@@ -1,24 +1,17 @@
 // BASE URL FOR FETCHING CONTENT
 export const baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
-function getBaseURL(rootFolderName) {
-	if(window.location.pathname.includes(rootFolderName)){
-	  return window.location.origin + rootFolderName;
-	} else {
-	  return window.location.origin;
-	}
-}
-
 export function executePHP(phpPath, requestInit, callBack) {
 	fetch(phpPath, requestInit)
 	.then(response => {
 		if (!response.ok)
 			throw new Error('Network response was not ok');
 
-		const spinner = document.getElementById('cover-spin');
-		if(spinner) spinner.style.display = 'none';
-
-		return response.json();
+		if(response.headers.get('content-type') === 'application/json'){
+			return response.json();
+		} else {
+			return response.text();
+		}
 	})
 	.then(result => {
     switch(result.status){
@@ -45,6 +38,14 @@ export function executePHP(phpPath, requestInit, callBack) {
 			`Error: ${error.message}`
 		];
 		console.error(error.message);
-		alert(err_msg.join(" "));
+		alert(err_msg.join(''));
 	});
+}
+
+function getBaseURL(rootFolderName) {
+	if(window.location.pathname.includes(rootFolderName)){
+	  return window.location.origin + rootFolderName;
+	} else {
+	  return window.location.origin;
+	}
 }

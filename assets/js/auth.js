@@ -2,7 +2,6 @@ import { baseURL, executePHP} from './inc-js/utils.inc.js';
 
 'use strict';
 $(function () {
-	$('<div id="cover-spin"></div>').appendTo('body'); // spinner
 	$("input[type='password'][data-eye]").each(function (i) {
 		var $this = $(this),
 			id = 'eye-password-' + i,
@@ -83,27 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	if(username) username.setAttribute('pattern', pattern.username);
 	if(password) password.setAttribute('pattern', pattern.password);
 
-	form.addEventListener('submit', function (event) {
-		// Prevent Deafault form submission.
+	form.addEventListener('submit', (event)=>{
+		/* PREVENT DEAFAULT FORM SUBMISSION */
 		event.preventDefault();
 	
-		if(!this.checkValidity()){
+		if(!form.checkValidity()){
 			event.stopPropagation();
 		} else {
-			const spinner = document.getElementById('cover-spin');
-			if(spinner) spinner.style.display = 'block';
-			const phpPath = baseURL + this.getAttribute('php-execute');
+			const phpPath = baseURL + form.getAttribute('php-execute');
 			const requestInit = {
 				method: 'POST',
-				body:new FormData(this)
+				body:new FormData(form)
 			};
 			executePHP(phpPath, requestInit);
 		}
-		this.classList.add('was-validated');
+		form.classList.add('was-validated');
 	});
-});
-
-window.addEventListener('load', function() {
-  const spinner = document.getElementById('cover-spin');
-	if(spinner) spinner.style.display = 'none';
 });
