@@ -1,4 +1,4 @@
-import { executePHP, baseURL } from './inc-js/utils.inc.js';
+import { baseURL, executePHP, spinner } from "../inc-js/utils.inc.js";
 
 document.addEventListener('DOMContentLoaded', ()=>{
   const userForm = extractFormElements('user-data', 'userForm-btns');
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const requestInit = { method: 'GET' };
 
   executePHP(phpPath, requestInit, (data)=>{
-    data = JSON.parse(data);
     img_desc.firstElementChild.innerText = data['name'];
     img_desc.lastElementChild.innerText = data['profession'];
     userForm.form.querySelector(`a[name='name']`).innerText = data['name'];
@@ -85,7 +84,10 @@ const formSubmit = (form, formData, event)=>{
   if(!form.checkValidity()){
     event.stopPropagation();
   } else {
-    const phpPath = baseURL + form.getAttribute('php-execute');
+    /* OPEN SPINNER WINDOW */
+		if(spinner) spinner.style.display = 'block';
+
+    const phpPath = baseURL + form.getAttribute('php-action');
     const requestInit = {
       method: 'POST',
       body: formData

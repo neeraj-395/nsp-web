@@ -17,9 +17,7 @@ if(isset($_SESSION['user_id'])){
     'reddit' => $_SESSION['reddit']
   );
 
-  $data = json_encode($userProfileData);
-
-  EXIT_WITH_JSON(DATA_RESPONSE, null, null, $data);
+  EXIT_WITH_JSON(DATA_RESPONSE, null, null, $userProfileData);
 
 } else {
   EXIT_WITH_JSON(BAD_RESPONSE, USER_NOT_FOUND, LOGIN_PAGE);

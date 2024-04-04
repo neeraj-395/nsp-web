@@ -16,8 +16,8 @@ try {
     if (!$user_id) EXIT_WITH_JSON(BAD_RESPONSE, USER_NOT_FOUND, LOGIN_PAGE);
 
     /* RETURN CACHED USER NOTE TUPLES IF AVAILABLE */
-    if (isset($_SESSION['UNT_JSON'])) {
-        EXIT_WITH_JSON(DATA_RESPONSE, null, null, json_encode($_SESSION['UNT_JSON']));
+    if (isset($_SESSION['UNT'])) {
+        EXIT_WITH_JSON(DATA_RESPONSE, null, null, $_SESSION['UNT']);
     }
 
     /* QUERY DATABASE FOR USER NOTE META-DATA TUPLES */
@@ -28,13 +28,14 @@ try {
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    $user_note_tuples = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    /* FETCH ALL RESULT TUPLES INTO AN ASSOCIATIVE ARRAY */
+    $user_profile_tuples = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     /* CACHE USER NOTE TUPLES IN SESSION */
-    $_SESSION['UNT_JSON'] = $user_note_tuples;
+    $_SESSION['UNT'] = $user_profile_tuples;
 
     /* RETURN USER NOTE TUPLES */
-    EXIT_WITH_JSON(DATA_RESPONSE, null, null, json_encode($_SESSION['UNT_JSON']));
+    EXIT_WITH_JSON(DATA_RESPONSE, null, null, $_SESSION['UNT']);
 
 } catch (PDOException $error) {
     /* HANDLE EXCEPTIONS */

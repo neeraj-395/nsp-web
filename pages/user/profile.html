@@ -31,7 +31,7 @@
 								</div>
 								<hr class="my-4">
 								<!--SOCIAL LINKS-->
-								<form id="user-social-set" php-execute="/backend/user-php/update.uss.php" novalidate>
+								<form id="user-social-set" php-action="/backend/user-php/update.uss.php" novalidate>
 									<ul class="list-group list-group-flush">
 										<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 											<h6 class="mb-0"><i class="bi bi-github me-1"></i>Github</h6>
@@ -74,7 +74,7 @@
 					<div class="col-md-8">
 						<div class="card mb-3">
 							<div class="card-body">
-								<form id="user-data" php-execute="/backend/user-php/update.ud.php" novalidate>
+								<form id="user-data" php-action="/backend/user-php/update.ud.php" novalidate>
 									<div class="row">
 										<div class="col-sm-3">
 											<div class="mb-2 h6">Full Name:</div>
@@ -194,8 +194,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
 			integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
 			crossorigin="anonymous"></script>
-		<script type="module" src="../../assets/js/partials-loader.js"></script>
-		<script type="module" src="../../assets/js/user-profile-handler.js"></script>
+		<script type="module" src="../../assets/js/partial.loader.js"></script>
+		<script type="module" src="../../assets/js/user-js/profile.handler.js"></script>
 	</body>
 
 </html>

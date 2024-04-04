@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS user_data (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     reg_date DATE DEFAULT (CURRENT_DATE) NOT NULL,
-    contact VARCHAR(15), 
+    contact VARCHAR(15),
     profession VARCHAR(50),
     INDEX login_inx (user_id, username, password) 
 );

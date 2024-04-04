@@ -43,7 +43,7 @@ try {
 	$stmt->execute();
 
 	/* CLEAR SESSION DATA */
-	unset($_SESSION['UNT_JSON']);
+	unset($_SESSION['UNT']);
 
 	/* RETURN SUCCESS MESSAGE */
 	EXIT_WITH_JSON(GOOD_RESPONSE, "The note with id $note_id has been successfully deleted.");

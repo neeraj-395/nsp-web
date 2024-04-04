@@ -1,4 +1,4 @@
-import { executePHP, baseURL } from "./inc-js/utils.inc.js";
+import { baseURL, executePHP, spinner } from "../inc-js/utils.inc.js";
 
 var note_file = null;
 const droparea = {
@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(!form.checkValidity() || !note_file){
       event.stopPropagation();
     } else {
-      const spinner = document.getElementById('cover-spin');
+      /* OPEN SPINNER WINDOW */
 			if(spinner) spinner.style.display = 'block';
 
       formData.set('note-file', note_file);
 
-			const phpPath = baseURL + form.getAttribute('php-execute');
+			const phpPath = baseURL + form.getAttribute('php-action');
 			const requestInit = {
 				method: 'POST',
 				body:formData

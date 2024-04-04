@@ -1,3 +1,6 @@
+/* LOADING SPINNER */
+export const spinner = document.getElementById('cover-spin');
+
 // BASE URL FOR FETCHING CONTENT
 export const baseURL = getBaseURL('/nsp-dbms-project'); // Define root folder name with forward slash (/) !importatant
 
@@ -6,8 +9,7 @@ export function executePHP(phpPath, requestInit, callBack) {
 	.then(response => {
 		if (!response.ok)
 			throw new Error('Network response was not ok');
-		
-			return response.json();
+		return response.json();
 	})
 	.then(result => {
     switch(result.status){
@@ -35,6 +37,13 @@ export function executePHP(phpPath, requestInit, callBack) {
 		];
 		console.error(error.message);
 		alert(err_msg.join(''));
+	})
+	.finally(()=>{
+		/* CLOSE THE SPINNER WINDOW*/
+		if(document.readyState === 'complete') {
+			console.log('spinner off');
+			if(spinner) spinner.style.display = 'none';
+		}
 	});
 }
 

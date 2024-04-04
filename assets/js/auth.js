@@ -1,7 +1,16 @@
-import { baseURL, executePHP} from './inc-js/utils.inc.js';
+import { baseURL, executePHP, spinner} from './inc-js/utils.inc.js';
+
+const pattern = {
+	name: "^[A-Z][a-z]*( [A-Z][a-z]*)*$",
+	username: "^[A-Za-z][A-Za-z0-9_]{7,29}$",
+	password: "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}"
+};
 
 'use strict';
 $(function () {
+	/* SHOW LOADING SCREEN */
+	$(spinner).show();
+
 	$("input[type='password'][data-eye]").each(function (i) {
 		var $this = $(this),
 			id = 'eye-password-' + i,
@@ -63,39 +72,38 @@ $(function () {
 				$(this).find('#hide').attr('hidden','true');
 			}
 		});
+
+		/* FORM ELEMENTS */
+		const form = $('.auth-validation');
+  	form.find('#name').attr('pattern', pattern.name);
+  	form.find('#username').attr('pattern', pattern.username);
+  	form.find('#password').attr('pattern', pattern.password);
+
+		form.on('submit', function(event) {
+			/* PREVENT DEFAULT FORM SUBMISSION */
+			event.preventDefault();
+
+			if (!this.checkValidity()) {
+					event.stopPropagation();
+			} else {
+					/* OPEN SPINNER WINDOW */
+					$(spinner).show();
+
+					const phpPath = baseURL + $(this).attr('php-action');
+					const requestInit = {
+							method: 'POST',
+							body: new FormData(this)
+					};
+					executePHP(phpPath, requestInit);
+			}
+			$(this).addClass('was-validated');
+		});
 	});
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-	const form = document.querySelector('.auth-validation');
-	const name = form.querySelector('#name');
-	const username = form.querySelector('#username');
-	const password = form.querySelector('#password');	
-
-	const pattern = {
-		name: "^[A-Z][a-z]*( [A-Z][a-z]*)*$",
-		username: "^[A-Za-z][A-Za-z0-9_]{7,29}$",
-		password: "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}"
-	}
-
-	if(name) name.setAttribute('pattern', pattern.name);
-	if(username) username.setAttribute('pattern', pattern.username);
-	if(password) password.setAttribute('pattern', pattern.password);
-
-	form.addEventListener('submit', (event)=>{
-		/* PREVENT DEAFAULT FORM SUBMISSION */
-		event.preventDefault();
-	
-		if(!form.checkValidity()){
-			event.stopPropagation();
-		} else {
-			const phpPath = baseURL + form.getAttribute('php-execute');
-			const requestInit = {
-				method: 'POST',
-				body:new FormData(form)
-			};
-			executePHP(phpPath, requestInit);
-		}
-		form.classList.add('was-validated');
-	});
+$(window).on("load", function() {
+  /* HIDE LOADING SCREEN */
+	setTimeout(()=>{
+		$(spinner).hide();
+	},300)
 });

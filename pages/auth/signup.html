@@ -24,7 +24,7 @@
 						<div class="card fat">
 							<div class="card-body">
 								<h4 class="card-title">Register</h4>
-								<form class="auth-validation" php-execute="/backend/auth-php/signup.auth.php" novalidate>
+								<form class="auth-validation" php-action="/backend/auth-php/signup.auth.php" novalidate>
 									<div class="form-group">
 										<label for="name">Name</label>
 										<input id="name" type="text" class="form-control" name="name" required autocomplete="name">
@@ -92,6 +92,10 @@
 				</div>
 			</div>
 		</section>
+
+		<!--SPINNER-->
+    <div id="cover-spin"></div>
+		
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 			crossorigin="anonymous"></script>

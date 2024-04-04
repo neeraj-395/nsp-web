@@ -108,7 +108,7 @@ try {
 	$stmt->execute();
 
 	/* CLEAR SESSION DATA */
-	unset($_SESSION['UNT_JSON']);
+	unset($_SESSION['UNT']);
 
 	EXIT_WITH_JSON(GOOD_RESPONSE, NOTE_UPLOAD_SUCCESS);
 } catch (PDOException $error) {

@@ -1,7 +1,10 @@
-import {baseURL, executePHP} from './inc-js/utils.inc.js';
+import {baseURL, executePHP, spinner} from './inc-js/utils.inc.js';
 
 //---------------------Load Header And Footer Into HTML Document---------------------//
 $(function () {
+  /* SHOW LOADING SCREEN */
+  $(spinner).show();
+
   var header = $.Deferred();
   var footer = $.Deferred();
   $('#header').load(baseURL + "/partials/header.html", ()=> header.resolve()); // load header
@@ -12,11 +15,11 @@ $(function () {
     const phpPath = baseURL + "/backend/auth-php/status.auth.php";
     const requestInit = { method: 'GET' };
 
-    executePHP(phpPath, requestInit, (User)=>{
-      if (User.isLoggedIn) {
+    executePHP(phpPath, requestInit, (user)=>{
+      if (user.isLoggedIn) {
         $('#login-false').addClass("visually-hidden");
         $('#login-true').removeClass("visually-hidden");
-        $('#login-true > a').append("&nbsp;&nbsp" + User.name);
+        $('#login-true > a').append("&nbsp;&nbsp" + user.name);
       } else {
         $('#login-false').removeClass("visually-hidden");
         $('#login-true').addClass("visually-hidden");
@@ -34,4 +37,11 @@ $(function () {
       else $(this).attr('src', baseURL + imgpath);
     });
   });
+});
+
+$(window).on("load", function() {
+  /* HIDE LOADING SCREEN */
+  setTimeout(()=>{
+		$(spinner).hide();
+	},300)
 });

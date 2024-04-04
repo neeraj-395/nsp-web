@@ -11,7 +11,7 @@ define('USER_NOT_FOUND', "User Not Found!\nit appears that you are not currently
       ."Please log in first and try again.\nWe apologize for any inconvenience [' . ']");
 
 function EXIT_WITH_JSON(int $status_code, ?string $message = null,
-                        ?string $redirect = null, ?string $data = null) {
+                        ?string $redirect = null, ?array $data = null) {
     $response = array(
         'message' => $message,
         'redirect' => $redirect,

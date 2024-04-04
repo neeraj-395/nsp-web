@@ -5,14 +5,15 @@ header('Content-Type: application/json');
 if(isset($_SESSION['user_id']))
     echo json_encode(array(
         'status' => 300,
-        'data' => json_encode(array(
+        'data' => array(
             'isLoggedIn' => true,
             'name' => $_SESSION['name']
-        ))
+        )
     ));
 else 
     echo json_encode(array(
         'status' => 300,
-        'data' => json_encode(array('isLoggedIn' => false))
+        'data' => array('isLoggedIn' => false)
     ));
+    
 exit;
