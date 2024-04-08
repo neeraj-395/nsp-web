@@ -21,27 +21,25 @@
       <section class="py-5 text-center container-fluid bg-body-secondary">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Search for Notes</h1>
-            <p class="lead text-body-secondary">Something short and leading about the collection below—its contents, the
-              creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-
-            <div class="d-flex flex-row">
-              <input id="newsletter1" type="text" class="form-control" placeholder="Search for Notes">
-              <a class="btn btn-icon" role="button" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256.001 256.001" width="38" height="38">
-                  <circle cx="115.998" cy="116" r="84" fill="none" stroke="#000" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="12"></circle>
-                  <line x1="175.392" x2="223.992" y1="175.4" y2="224.001" fill="none" stroke="#000"
-                    stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></line>
-                </svg>
-              </a>
-            </div>
+            <h1 class="fw-light">Explore a Vast Library of Notes</h1>
+            <p class="lead text-body-secondary">Find the perfect study materials from a treasure 
+              trove of notes shared by students across high-school, diploma, and college programs. 
+              Sharpen your knowledge, ace your exams, and elevate your academic journey.</p>
+            <form class="d-flex flex-row" id="search">
+              <input name="query" type="text" class="form-control" placeholder="Search for Notes..." required>
+              <button class="btn btn-icon" role="button" type="submit">
+                <img src="../assets/img/search.svg">
+              </button>
+            </form>
           </div>
         </div>
       </section>
       <!--SEARCH-CONTENT-->
       <section class="album py-5 bg-body-tertiary">
         <div class="container">
+          <div class="card w-100" id="empMsg">
+            <img src="../assets/img/no_result.jpg">
+          </div>
           <div id="content" class="row row-cols-1 row-cols-md-2 g-4"></div>
         </div>
       </section>

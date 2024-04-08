@@ -3,7 +3,7 @@ require_once('../../database/connect.db.php');
 require_once('../inc-php/upload.inc.php');
 
 /* ERROR MESSAGES */
-define('INVALID_POST_DATA', 'Invalid inputs and files (message from backend).');
+define('INVALID_POST_DATA', 'Inputs or files is not provided correctly (from backend)');
 define('INVALID_FILE_EXTENSION', 'Invalid file type. Please ensure you are using the correct file extension.');
 define('NOTE_DIR_FAILURE', 'Error: Failed to locate or create note directory');
 define('COVER_DIR_FAILURE', 'Error: Failed to locate or create cover directory');
@@ -39,7 +39,8 @@ try {
 	$note = (isset($_FILES['note-file'])) ? $_FILES['note-file'] : null;
 	$cover = (isset($_FILES['cover-img'])) ? $_FILES['cover-img'] : null;
 
-	if (!$title || !$desc || !$note || !$cover) EXIT_WITH_JSON(BAD_RESPONSE, INVALID_POST_DATA);
+	if (!$title || !$desc || !$note || !$cover) 
+		EXIT_WITH_JSON(BAD_RESPONSE, INVALID_POST_DATA);
 
 	foreach ([$note, $cover] as $key => $file) {
 		if ($file['error'] !== UPLOAD_ERR_OK) {

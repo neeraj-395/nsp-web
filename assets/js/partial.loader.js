@@ -3,7 +3,7 @@ import {baseURL, executePHP, spinner} from './inc-js/utils.inc.js';
 //---------------------Load Header And Footer Into HTML Document---------------------//
 $(function () {
   /* SHOW LOADING SCREEN */
-  $(spinner).show();
+  if(spinner) $(spinner).show();
 
   var header = $.Deferred();
   var footer = $.Deferred();
@@ -36,12 +36,8 @@ $(function () {
       if (filepath) $(this).attr('href', baseURL + filepath);
       else $(this).attr('src', baseURL + imgpath);
     });
-  });
-});
 
-$(window).on("load", function() {
-  /* HIDE LOADING SCREEN */
-  setTimeout(()=>{
-		$(spinner).hide();
-	},300)
+    /* HIDE LOADING SCREEN */
+    if(spinner) $(spinner).hide();
+  });
 });

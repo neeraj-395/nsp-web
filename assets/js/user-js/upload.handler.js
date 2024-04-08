@@ -1,6 +1,6 @@
 import { baseURL, executePHP, spinner } from "../inc-js/utils.inc.js";
 
-var note_file = null;
+var fileObject = null;
 const droparea = {
   elem : null,
   icon : null,
@@ -34,29 +34,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     const cover_img = document.getElementById('cover-img');
     const formData = new FormData(form);
+    formData.set('note-file', fileObject);
     
     validate(cover_img, ()=>{
       const imgType = formData.get('cover-img').type;
       return imgType !== 'image/png';
     });
 
-    validate(droparea.elem, ()=>{
-      return note_file === null;
-    });
-
-    if(!form.checkValidity() || !note_file){
+    if(!fileObject){
+      handleInvalidFile('Please select a PDF file!',
+                        'Minimum allowed file size is 20MB.');
+      event.stopPropagation();
+    } else if(!form.checkValidity()){
       event.stopPropagation();
     } else {
-      /* OPEN SPINNER WINDOW */
-			if(spinner) spinner.style.display = 'block';
-
-      formData.set('note-file', note_file);
+      /* INTIALIZE SPINNER */
+      if(spinner) spinner.style.display = 'block';
 
 			const phpPath = baseURL + form.getAttribute('php-action');
 			const requestInit = {
 				method: 'POST',
-				body:formData
+				body: formData
 			};
+      formData.forEach((value,key)=>console.log(key + ' => ' + value));
 			executePHP(phpPath, requestInit);
     }
     form.classList.add('was-validated');
@@ -65,26 +65,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 function fileValidity(event) {
   const file = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-  if(file[0].type === 'application/pdf') {
-    droparea.icon.classList.remove('text-danger');
-    droparea.icon.classList.add('text-success');
-    droparea.htext.textContent = 'File Selected!';
-    droparea.stext.textContent = file[0].name;
-    droparea.elem.classList.remove('is-invalid');
-    droparea.elem.classList.add('is-valid');
-    note_file = file[0];
+  const _20MB = 20*1024*1024;
+  if(file[0].type === 'application/pdf' && file[0].size < _20MB) {
+    handleValidFile(file[0]);
+  } else if(file[0].size > _20MB) {
+    handleInvalidFile('Invalid File Size!',
+                      'Minimum allowed file size is 20MB.');
   } else {
-    droparea.icon.classList.remove('text-success');
-    droparea.icon.classList.add('text-danger');
-    droparea.htext.textContent = 'Invalid File Format!';
-    droparea.stext.textContent = 'Only pdf format is allowed';
-    droparea.elem.classList.remove('is-valid');
-    droparea.elem.classList.add('is-invalid');
-    note_file = null;
+    handleInvalidFile('Invalid File Format!',
+                      'Only pdf format is allowed');
   }
 }
 
-const validate = function(element, callBack){
+function validate(element, callBack) {
   if(callBack()){
     element.classList.remove('is-valid');
     element.classList.add('is-invalid'); // MAKE INVALID
@@ -92,4 +85,24 @@ const validate = function(element, callBack){
     element.classList.remove('is-invalid');
     element.classList.add('is-valid'); // MAKE VALID
   }
+}
+
+function handleInvalidFile(htext, stext) {
+  droparea.icon.classList.remove('text-success');
+  droparea.icon.classList.add('text-danger');
+  droparea.elem.classList.remove('is-valid');
+  droparea.elem.classList.add('is-invalid');
+  droparea.htext.textContent = htext;
+  droparea.stext.textContent = stext;
+  fileObject = null;
+}
+
+function handleValidFile(file) {
+  droparea.icon.classList.remove('text-danger');
+  droparea.icon.classList.add('text-success');
+  droparea.htext.textContent = 'File Selected!';
+  droparea.stext.textContent = file.name;
+  droparea.elem.classList.remove('is-invalid');
+  droparea.elem.classList.add('is-valid');
+  fileObject = file;
 }

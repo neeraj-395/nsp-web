@@ -86,9 +86,9 @@ $(function () {
 			if (!this.checkValidity()) {
 					event.stopPropagation();
 			} else {
-					/* OPEN SPINNER WINDOW */
-					$(spinner).show();
-
+					/* SHOW SPINNER */
+					if(spinner) $(spinner).show();
+					 
 					const phpPath = baseURL + $(this).attr('php-action');
 					const requestInit = {
 							method: 'POST',
